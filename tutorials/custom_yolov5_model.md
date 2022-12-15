@@ -3,13 +3,13 @@
 ## Supported models
 There are numerous implementations of YoloV5. CVEDIA-RT currently supports the models created by https://github.com/ultralytics/yolov5. 
 
-You can export and `ONNX` compatible model using the following command:
+You can export an `ONNX` compatible model using the following command:
 ```
 /opt/yolov5# python3.7 export.py --include onnx --nms --simplify
 ```
 
 Other implementations might be compatible as long as the last layers are in the same format. If you visualize your model using https://netron.app/ you should see a last layer similar to the image below:
-![Yolov5 Netron output](https://github.com/Cvedia/CVEDIA-RT-SDK/blob/main/tutorials/yolov5_netron.png)
+![Yolov5 Netron Output](https://github.com/Cvedia/CVEDIA-RT-SDK/blob/main/tutorials/yolov5_netron.png?raw=true)
 Make sure the model includes anchor box decoding (visible as a number of `mul` and `add` operations)
 
 ## Creating a JSON for your model
@@ -149,7 +149,7 @@ In the case of `TensorRT` you would change the `URI` to `tensorrt.1:///./mymodel
 ## Using your model in a solution
 
 To start using your custom model in a solution you'll have to change the `json` configuration files.
-Browse to or open the `assets/projects/<my project/` and find the `base_config.json`. This files serves as the default for all `instances` created on top of a solution.
+Browse to the `assets/projects/<my project/` folder and edit the `base_config.json`. This files serves as the default for all `instances` created on top of a specific solution.
 
 In this file you should find one or more keys with the name `model_file`. Pay close attention to the parent key to make sure you modify the configuration for the appropriate plugin. CVEDIA solutions might have up to 3 of those entries: `RGB Detectors`, `Thermal Detectors` or `Classifiers`. If you developed your own solution then the name should match the name you used on `api.factory.inference.create(solution, "PluginName")`.
 
@@ -164,3 +164,5 @@ An example of a detector configuration:
   "resize_method": "LINEAR"
 },
 ```
+
+After modifying this file, restart CVEDIA-RT and start your instance. You should now see the output of your model. You can confirm this by looking at the `debug` log and seeing what model got loaded.
