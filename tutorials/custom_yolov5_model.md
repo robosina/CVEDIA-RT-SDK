@@ -9,7 +9,7 @@ You can export and `ONNX` compatible model using the following command:
 ```
 
 Other implementations might be compatible as long as the last layers are in the same format. If you visualize your model using https://netron.app/ you should see a last layer similar to the image below:
-![[[yolov5_netron.png](https://github.com/Cvedia/CVEDIA-RT-SDK/blob/main/tutorials/yolov5_netron.png)]]
+![Yolov5 Netron output](https://github.com/Cvedia/CVEDIA-RT-SDK/blob/main/tutorials/yolov5_netron.png)
 Make sure the model includes anchor box decoding (visible as a number of `mul` and `add` operations)
 
 ## Creating a JSON for your model
