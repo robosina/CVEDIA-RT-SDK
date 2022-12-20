@@ -42,7 +42,7 @@ mkdir cvedia-rt/src/Plugins/HelloWorld/src
 ```
 
 Now create a file called `helloworld.cpp` in `cvedia-rt/src/Plugins/HelloWorld/src/`  with the following contents:
-```
+```c++
 #include "api/inference.h"
 #include "cvalue.h"
 #include "plog/Init.h"
@@ -77,7 +77,7 @@ void registerHandler() {
 ```
 
 Next we create a `CMakeLists.txt` in `cvedia-rt/src/Plugins/HelloWorld/` and fill it with the following:
-```
+```cmake
 message("Configuring HelloWorld plugin")
 
 # Add source to this project's executable.
@@ -101,7 +101,7 @@ install(TARGETS HelloWorld DESTINATION ${CMAKE_INSTALL_PREFIX}/Plugins)
 
 Finally we modify `cvedia-rt/src/Plugins/CMakeLists.txt` so we can add our custom plugin to the end of the build list:
 
-```
+```cmake
 # SPDX-FileCopyrightText: 2022 CVEDIA LTD
 #
 # SPDX-License-Identifier: Apache-2.0

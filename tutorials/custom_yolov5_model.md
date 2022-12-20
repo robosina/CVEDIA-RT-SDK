@@ -24,7 +24,7 @@ All models in CVEDIA-RT require a `.json` file for configuration. This is used t
 Start by creating a new file and calling it `<your model file>.json`. So as an example for a model file called `yolov5n.onnx` we create and save `yolov5n.onnx.json` in the same folder as your model.
 
 Then place the following contents in that file:
-```
+```json
 {
     "comment": "<anything you want>",
     "normalize_input": true,
@@ -132,7 +132,7 @@ On Linux:
 ```
 
 And depending on the image you should see output similar to this:
-```
+```json
 [
   {
     "classid": 0,
@@ -175,7 +175,7 @@ Browse to the `assets/projects/<my project/` folder and edit the `base_config.js
 In this file you should find one or more keys with the name `model_file`. Pay close attention to the parent key to make sure you modify the configuration for the appropriate plugin. CVEDIA solutions might have up to 3 of those entries: `RGB Detectors`, `Thermal Detectors` or `Classifiers`. If you developed your own solution then the name should match the name you used on `api.factory.inference.create(solution, "PluginName")`.
 
 An example of a detector configuration:
-```
+```json
 "Detector": {  
   "model_file": "auto://pva_det/rgb_aerial/medium_512x512/220325b", <= your uri here 
   "conf_threshold": 0.49,  
