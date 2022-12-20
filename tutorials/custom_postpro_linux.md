@@ -6,11 +6,15 @@
 - CMake 3.2+
 - .deb release of CVEDIA-RT
 
-If you're looking to run a new Neural Network architecture in CVEDIA-RT you'll most likely need to convert the output tensors into a usable format. We call this step the `post processing`. Post processing in RT is done through plugins that are dynamically loaded at Runtime. Each plugin generally handles one type of architecture, although multiple can be supported.
+If you're looking to run a new Neural Network architecture in CVEDIA-RT you'll most likely need to convert the output
+tensors into a usable format. We call this step the `post processing`. Post-processing in RT is done through plugins
+that are dynamically loaded at Runtime. Each plugin generally handles one type of architecture, although multiple
+can be supported.
 
 ## Installing the CVEDIA-RT SDK
 
-Before you can build a plugin you first need to download the [CVEDIA-RT SDK](https://github.com/Cvedia/CVEDIA-RT-SDK). Make sure to pick the version of the SDK matches that CVEDIA-RT on your system.
+Before you can build a plugin you first need to download the [CVEDIA-RT SDK](https://github.com/Cvedia/CVEDIA-RT-SDK).
+Make sure to pick the version of the SDK matches that CVEDIA-RT on your system.
 
 ```
 git clone https://github.com/Cvedia/CVEDIA-RT-SDK.git --recursive
@@ -33,7 +37,7 @@ If all went well the last command should show an output similar to:
 -- Installing: /opt/cvedia-rt/Plugins/postyolox.so
 ```
 
-## Building your first post processing plugin
+## Building your first post-processing plugin
 
 First we create the folders to store our custom plugin in:
 ```
@@ -107,23 +111,23 @@ Finally we modify `cvedia-rt/src/Plugins/CMakeLists.txt` so we can add our custo
 # SPDX-License-Identifier: Apache-2.0
 
 if(WITH_MNN_MODULE)
-    subdirs("MNN")
+    add_subdirectory("MNN")
 endif()
 
 if (WITH_POST_CLASSIFIER_MODULE)
-    subdirs("PostClassifier")
+    add_subdirectory("PostClassifier")
 endif()
 
 if (WITH_POST_YOLOV4_MODULE)
-    subdirs("PostYoloV4")
+    add_subdirectory("PostYoloV4")
 endif()
 
 if (WITH_POST_YOLOX_MODULE)
-    subdirs("PostYoloX")
+    add_subdirectory("PostYoloX")
 endif ()
 
 # My hello world plugin
-subdirs("HelloWorld")
+add_subdirectory("HelloWorld")
 
 ```
 
@@ -151,9 +155,11 @@ aj@anbessa:/opt# listnndevices -v | grep hello
 
 ## Getting output from your plugin
 
-The data your plugin returns can be retrieved in many ways (C++ API, Lua, CLI). Here I'll concentrate on using a CLI utility just to confirm everything works.
+The data your plugin returns can be retrieved in many ways (C++ API, Lua, CLI). Here I'll concentrate on using a CLI
+utility just to confirm everything works.
 
-Because our plugin doesn't actually do anything useful at this point we can use any AI model just for testing purpose. If you have your own model you can use that, if not, use the following commands to install one of CVEDIA's default models:
+Because our plugin doesn't actually do anything useful at this point we can use any AI model just for testing purpose.
+If you have your own model you can use that, if not, use the following commands to install one of CVEDIA's default models:
 
 ```
 modelforge -u openvino.CPU://pva_det/rgb_gs/nano_160x160/220421b -d
@@ -162,7 +168,8 @@ This downloads the model to `/opt/cvedia-rt/assets/models/pva_det/`.
 
 Next we have to replace the default post-processing plugin for this model with our `helloworld`.
 
-Open `/opt/cvedia-rt/assets/models/pva_det/pva_det_rgb_gs_nano_160x160_220421b.xml.json` and change `postprocess` from `yolox` to `helloworld`.
+Open `/opt/cvedia-rt/assets/models/pva_det/pva_det_rgb_gs_nano_160x160_220421b.xml.json` and change `postprocess` from
+`yolox` to `helloworld`.
 
 When we `runinference` on any image or video now you should see the following output:
 ```
@@ -173,15 +180,19 @@ runinference -m openvino.CPU://pva_det/rgb_gs/nano_160x160/220421b -i <image.jpg
 
 ## Returning actual data
 
-Transforming tensors into usable data can be quite challenging at times. We rely heavily on `xtensor` as it provides an interface that's highly similar to `numpy`, making it easier to port over Python implementations.
+Transforming tensors into usable data can be quite challenging at times. We rely heavily on `xtensor` as it provides an
+interface that's highly similar to `numpy`, making it easier to port over Python implementations.
 
-Your next step would be to go over the example plugins in the `cvedia-rt/src/Plugins/` folder. We've bundled some of the different `detector` architectures as well as a `classifier` implementation.
+Your next step would be to go over the example plugins in the `cvedia-rt/src/Plugins/` folder. We've bundled some of the
+different `detector` architectures as well as a `classifier` implementation.
 
 For any questions on the data formats or conventions feel free to hit us up on Discord: https://discord.gg/7RdNVkRAQW
 
 ## Performance of your plugin
 
-As optimizations matter greatly when developing for Edge devices it's important to keep an eye on the performance of your plugin. Using our model benchmark you can see how much time is spent in your plugin and you can even compare that to other implementations.
+As optimizations matter greatly when developing for Edge devices it's important to keep an eye on the performance of
+your plugin. Using our model benchmark you can see how much time is spent in your plugin and you can even compare
+that to other implementations.
 
 This is how you would run a benchmark:
 ```
@@ -201,4 +212,5 @@ Number of channels in this model might not be supported
 
 ```
 
-The last column shows the performance of the `Hello World` plugin. You can run `benchmark` with `--help` to see many of the other options available.
+The last column shows the performance of the `Hello World` plugin. You can run `benchmark` with `--help` to see many of
+the other options available.
